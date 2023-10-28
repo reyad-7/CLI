@@ -46,6 +46,53 @@ class Terminal {
         System.out.println(theCurrentPath.toString());
     }
 
+    /////////////////////////////////////////////////////////////////
+
+    public void cd(String [] args){
+
+    }
+    
+///////////////////////////////////////////
+
+    public void ls(String [] args){
+
+    }
+
+    //////////////////////////////////////////
+
+    public void mkdir(String [] args){
+
+    }
+
+    //////////////////////////////////////////
+
+    public void rmdir(String [] args){
+
+    }
+
+    /////////////////////////////////////////
+
+    public void touch(String [] args){
+
+    }
+
+    /////////////////////////////////////////
+
+    public void rm(String FileName){
+
+    }
+
+    ////////////////////////////////////////
+
+
+
+    public void cat(String [] args){
+
+    }
+
+    //////////////////////////////////////////
+
+
 }
 
 
