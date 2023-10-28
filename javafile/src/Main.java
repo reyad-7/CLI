@@ -116,6 +116,46 @@ class Terminal {
         }
     }
 
+    public void chooseCommandAction(String command, String[] args) {
+        switch (command){
+            case "echo" :
+                echo(args);
+                break;
+            case "pwd" :
+                pwd();
+                break;
+            case "cd" :
+//                cd(args);
+                break;
+            case "ls" :
+//             System.out.println(ls(args));
+                break;
+
+            case "mkdir" :
+//                mkdir(args);
+                break;
+            case "rmdir" :
+//                rmdir(args);
+                break;
+            case "touch":
+//                touch(args);
+                break;
+            case "help":
+//                help();
+                break;
+            case "cat":
+//                cat(args);
+                break;
+            case "rm":
+//                rm(args[0]);
+                break;
+            case "clear" :
+//                clear();
+                break;
+        }
+    }
+
+
 
 
 }
