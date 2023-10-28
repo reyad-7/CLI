@@ -31,6 +31,16 @@ class Terminal {
     Terminal() {
 
     }
+
+    public void echo(String[] args) {
+        if (args.length == 1) {
+            System.out.println(args[0]);
+        } else {
+            System.out.println("error only 1 argument should be entered ");
+        }
+    }
+
+
 }
 
 
