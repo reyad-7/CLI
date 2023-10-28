@@ -22,6 +22,17 @@ class Parser {
     }
 }
 
+class Terminal {
+    Parser parser;
+    private Path theCurrentPath = FileSystems.getDefault().getPath("C:\\Users\\Mohamed reyad");
+    Terminal(Parser parser) {
+        this.parser = parser;
+    }
+    Terminal() {
+
+    }
+}
+
 
 public class Main {
     public static void main(String[] args) {
