@@ -51,7 +51,7 @@ class Terminal {
     public void cd(String [] args){
 
     }
-    
+
 ///////////////////////////////////////////
 
     public void ls(String [] args){
@@ -91,6 +91,31 @@ class Terminal {
     }
 
     //////////////////////////////////////////
+
+
+    public void help(){
+        System.out.println("echo   -> takes 1 argument and prints it..");
+        System.out.println("pwd    -> return an absolute (full) path.");
+        System.out.println("cd     -> change the directory.");
+        System.out.println("ls     -> lists the contents of the current directory sorted alphabetically");
+        System.out.println("ls -r  -> lists the contents of the current directory in reverse order.");
+        System.out.println("mkdir  -> make a new directory.");
+        System.out.println("rmdir  -> delete a directory.");
+        System.out.println("touch  -> create a file ");
+        System.out.println("rm     -> delete directories and the contents within them.");
+        System.out.println("cat    -> Prints all contents in files.");
+        System.out.println("help   -> display all command to help you.");
+        System.out.println("clear   -> clears the screen.");
+        System.out.println("exit   -> stop program.");
+
+    }
+
+    public void clear(){
+        for(int i = 0;i < 100;i++){
+            System.out.println();
+        }
+    }
+
 
 
 }
