@@ -41,6 +41,11 @@ class Terminal {
     }
 
 
+    ////////////////////////// second function  /////////////////////////////
+    public void pwd(){
+        System.out.println(theCurrentPath.toString());
+    }
+
 }
 
 
