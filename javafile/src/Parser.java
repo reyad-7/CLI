@@ -16,6 +16,9 @@ public class Parser {
         else if (commandName.equals("pwd")) {
             return true;
         }
+        else if (commandName.equals("help")) {
+            return true;
+        }
         return false;
     }
 

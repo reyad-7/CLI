@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 public class Terminal {
     Parser parser;
-    private Path CurrentPath = FileSystems.getDefault().getPath("C:\\Users\\Mohamed reyad");
+    private Path CurrentPath = FileSystems.getDefault().getPath(System.getProperty("user.dir"));
     private Path previousPath;
 
     Terminal(Parser parser) {
@@ -39,13 +39,11 @@ public class Terminal {
     public void cd(String [] args){
         try {
             if (args.length == 0) {
-                CurrentPath = FileSystems.getDefault().getPath(System.getProperty("user.dir"));
+                CurrentPath=FileSystems.getDefault().getPath("C:\\Users\\Mohamed reyad");
                 System.out.println("Current Directory: " + CurrentPath.toString());
-            } else if (args.length == 1) {
-                if (args[0].equals("~")) {
-                    CurrentPath = FileSystems.getDefault().getPath(System.getProperty("user.dir"));
-                }
-                else if (args[0].equals("..")) {  // second check to change the current directory to the previous directory.
+            }
+            else if (args.length == 1) {
+                if (args[0].equals("..")) {  // second check to change the current directory to the previous directory.
                     if (CurrentPath.getParent() != null) {  //first check if there is a parent directory
                         previousPath = CurrentPath;
                         CurrentPath = CurrentPath.getParent();
@@ -55,22 +53,17 @@ public class Terminal {
                     }
 
                 }
+
                 else {                          // third check to change the current path to that path
                     previousPath = CurrentPath;
                     CurrentPath = FileSystems.getDefault().getPath(args[0]);
                 }
                 System.out.println("Current Directory: " + CurrentPath.toString());
             }
-//            else {
-//                System.out.println("Usage: cd <directory>");
-//            }
         }
         catch (InvalidPathException e) {
             System.out.println("Invalid path: " + e.getMessage());
         }
-//        catch (FileSystemException e) {
-//            System.out.println("File system error: " + e.getMessage());
-//        }
         catch (Exception e ){
             System.out.println("an error occurred " +e.getMessage());
         }
@@ -167,7 +160,7 @@ public class Terminal {
 //                touch(args);
                 break;
             case "help":
-//                help();
+                help();
                 break;
             case "cat":
 //                cat(args);

@@ -17,9 +17,13 @@ public class Main {
             if (userInput.equals("exit")) {
                 KeepGoing = false;
                 break;
-            } else {
-                parser.parse(userInput);
-                terminal.chooseCommandAction(parser.commandName,parser.getArgs());
+            }
+            else {
+                if (parser.parse(userInput)) {
+                    terminal.chooseCommandAction(parser.commandName, parser.getArgs());
+                } else {
+                    System.out.println("wrong command , please try again ");
+                }
             }
         }
     }
