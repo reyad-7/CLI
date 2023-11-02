@@ -1,7 +1,10 @@
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 public class Terminal {
     Parser parser;
@@ -87,7 +90,7 @@ public class Terminal {
         String dir = args[0];
         try {
             if (dir.equals("*")) {
-                File theDir = currentDirectory;
+                File theDir = new File(currentDirectory);
                 File[] tmp = theDir.listFiles();
                 for (int i = 0; i < tmp.length; i++) {
                     File file = tmp[i];
@@ -192,7 +195,7 @@ public class Terminal {
         }
     }
 
-    public void chooseCommandAction(String command, String[] args) {
+    public void chooseCommandAction(String command, String[] args) throws IOException {
         switch (command){
             case "echo" :
                 echo(args);

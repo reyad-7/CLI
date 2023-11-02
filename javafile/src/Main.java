@@ -4,7 +4,7 @@ import java.nio.file.*;
 //import java.awt.event.TextEvent;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Parser parser = new Parser();
         Terminal terminal = new Terminal(parser);
         String userInput;
