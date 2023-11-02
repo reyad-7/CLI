@@ -83,28 +83,87 @@ public class Terminal {
 
     //////////////////////////////////////////
 
-    public void rmdir(String [] args){
-
+     public void rmdir(String [] args) {
+        String dir = args[0];
+        try {
+            if (dir.equals("*")) {
+                File theDir = currentDirectory;
+                File[] tmp = theDir.listFiles();
+                for (int i = 0; i < tmp.length; i++) {
+                    File file = tmp[i];
+                    if (!file.isFile()) {
+                        if (file.listFiles().length == 0) {
+                            file.delete();
+                        }
+                    }
+                }
+            } else {
+                File theDir;
+                if (dir.contains(":")) {
+                    theDir = new File(dir);
+                } else {
+                    theDir = new File(System.getProperty("user.dir") + "\\" + dir);
+                }
+                if (theDir.listFiles().length == 0) {
+                    theDir.delete();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
-
     /////////////////////////////////////////
 
-    public void touch(String [] args){
+      public void touch(String [] args) {
+        File file;
+        if (args[0].contains(":")) {
+            file = new File(args[0]);
+        } else {
+            file = new File(currentDirectory + "\\" + args[0]);
+        }
 
+        try {
+            if (!new File(args[0]).exists())
+                file.createNewFile();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
-
+    
     /////////////////////////////////////////
 
-    public void rm(String FileName){
+    public void rm(String fileName) throws IOException, NoSuchFileException {
+        File file = new File(currentDirectory,fileName);
 
+        if(!file.exists())
+            throw new NoSuchFileException(fileName,null,"No such file.");
+        else if(file.isDirectory())
+            throw new IOException("Cannot delete directory.");
+        else if (!file.delete())
+            throw  new IOException("Cannot delete file.");
     }
 
     ////////////////////////////////////////
 
 
 
-    public void cat(String [] args){
-
+   public void cat(String [] args) throws IOException {
+        for (int i = 0 ; i< args.length;i++){
+            File file = new File(currentDirectory , args[i]);
+            Scanner fileReader = new Scanner(file);
+            StringBuilder text= new StringBuilder();
+            if (file.exists() && file.isFile())
+            {
+                while (fileReader.hasNextLine())
+                {
+                    text.append(fileReader.nextLine()+'\n');
+                }
+                if (text.length()>0){System.out.println(text); }
+            }
+            else{
+                throw new IOException("No such file.");
+            }
+        }
     }
 
     //////////////////////////////////////////
@@ -152,22 +211,22 @@ public class Terminal {
 //                mkdir(args);
                 break;
             case "rmdir" :
-//                rmdir(args);
+                rmdir(args);
                 break;
             case "touch":
-//                touch(args);
+                touch(args);
                 break;
             case "help":
                 help();
                 break;
             case "cat":
-//                cat(args);
+                cat(args);
                 break;
             case "rm":
-//                rm(args[0]);
+                rm(args[0]);
                 break;
             case "clear" :
-//                clear();
+                clear();
                 break;
         }
     }
