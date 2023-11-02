@@ -4,6 +4,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.InvalidPathException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Terminal {
@@ -74,14 +75,42 @@ public class Terminal {
 
 ///////////////////////////////////////////
 
-    public void ls(String [] args){
-
+    public void ls(){
+        try {
+            File f = new File(currentDirectory);
+            String []arr = f.list();
+            Arrays.sort(arr);
+            for (String s: arr ) {
+                System.out.println(s);
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error listing contents of the directory: " + e.getMessage());
+        }
     }
 
     //////////////////////////////////////////
 
     public void mkdir(String [] args){
-
+        for (int i =0;i<args.length; i++)
+        {
+            File f = new File(args[i]);
+            f.mkdir();
+        }
+    }
+    ////////////////////////////////////////
+    public void ls_r(){
+        try {
+            File f = new File(currentDirectory);
+            String []arr = f.list();
+            Arrays.sort(arr);
+            for (int i = arr.length-1;i>=0;i--)
+            {
+                System.out.println(arr[i]);
+            }
+        }catch (Exception e) {
+            System.err.println("Error listing contents of the directory: " + e.getMessage());
+        }
     }
 
     //////////////////////////////////////////
@@ -207,11 +236,13 @@ public class Terminal {
                 System.out.println(cd(args));
                 break;
             case "ls" :
-//             System.out.println(ls(args));
+                ls();
                 break;
-
+            case "ls-r" :
+                ls_r();
+                break;
             case "mkdir" :
-//                mkdir(args);
+                mkdir(args);
                 break;
             case "rmdir" :
                 rmdir(args);
