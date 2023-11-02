@@ -1,11 +1,12 @@
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 public class Terminal {
     Parser parser;
-    private Path CurrentPath = FileSystems.getDefault().getPath(System.getProperty("user.dir"));
-    private Path previousPath;
+    public static String currentDirectory = System.getProperty("user.dir");
+    public static final String homeDirectory = System.getProperty("user.dir");
 
     Terminal(Parser parser) {
         this.parser = parser;
@@ -14,8 +15,8 @@ public class Terminal {
 
     }
     //getter for the current path
-    public Path getTheCurrentPath() {
-        return CurrentPath;
+    public String getTheCurrentPath() {
+        return currentDirectory;
     }
 
 
@@ -30,44 +31,41 @@ public class Terminal {
 
 
 ////////////////////////// second function  /////////////////////////////
-    public void pwd(){
-        System.out.println(CurrentPath.toString());
+    public void pwd() {
+        System.out.println(currentDirectory);
     }
 
 /////////////////////////////////////////////////////////////////
 
-    public void cd(String [] args){
-        try {
-            if (args.length == 0) {
-                CurrentPath=FileSystems.getDefault().getPath("C:\\Users\\Mohamed reyad");
-                System.out.println("Current Directory: " + CurrentPath.toString());
-            }
-            else if (args.length == 1) {
-                if (args[0].equals("..")) {  // second check to change the current directory to the previous directory.
-                    if (CurrentPath.getParent() != null) {  //first check if there is a parent directory
-                        previousPath = CurrentPath;
-                        CurrentPath = CurrentPath.getParent();
+    public String cd(String[] args) {
+        String result = "";
+        if (args.length == 0 ) {
+            currentDirectory=homeDirectory;
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("..")) {  // second check to change the current directory to the previous directory.
+                try {
+                    File currentDir = new File(currentDirectory);
+                    String previousPath = currentDir.getParent();
+                    if (previousPath != null) {
+                        currentDirectory = previousPath;
+                    } else {
+                        result += "Already at the root directory.";
                     }
-                    else {
-                        System.out.println("Already at the root directory.");
-                    }
-
+                } catch (Exception e) {
+                    result += "An error occurred while navigating up the directory.\n";
                 }
-
-                else {                          // third check to change the current path to that path
-                    previousPath = CurrentPath;
-                    CurrentPath = FileSystems.getDefault().getPath(args[0]);
+            } else {// third check to change the current path to that path
+                File newDir;
+                newDir = new File(currentDirectory, args[0].toString());
+                if (newDir.isDirectory()) {
+                    currentDirectory = newDir.getPath();
+                } else {
+                    result += "Directory not found: " + args[0] + '\n';
                 }
-                System.out.println("Current Directory: " + CurrentPath.toString());
             }
         }
-        catch (InvalidPathException e) {
-            System.out.println("Invalid path: " + e.getMessage());
-        }
-        catch (Exception e ){
-            System.out.println("an error occurred " +e.getMessage());
-        }
-
+        result += currentDirectory ;
+        return result;
     }
 
 
@@ -144,7 +142,7 @@ public class Terminal {
                 pwd();
                 break;
             case "cd" :
-                cd(args);
+                System.out.println(cd(args));
                 break;
             case "ls" :
 //             System.out.println(ls(args));

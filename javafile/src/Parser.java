@@ -3,10 +3,16 @@ import java.util.Arrays;
 public class Parser {
     String commandName;
     String[] args;
+    private String userInput;
     public boolean parse(String input) {
-        String[] userInput = input.split(" ");
-        commandName = userInput[0];
-        args = Arrays.copyOfRange(userInput, 1, userInput.length);
+        userInput = input;
+        String[] parts = input.split(" ");
+        if (parts.length > 0) {
+            commandName = parts[0];
+            args = new String[parts.length - 1];
+            System.arraycopy(parts, 1, args, 0, args.length);
+        }
+
         if (commandName.equals("echo")){
             return true;
         }
