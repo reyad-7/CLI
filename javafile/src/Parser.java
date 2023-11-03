@@ -46,6 +46,15 @@ public class Parser {
         else if (commandName.equals("ls-r")) {
             return true;
         }
+        else if (commandName.equals("cp")) {
+            return true;
+        }
+        else if (commandName.equals(">")) {
+            return true;
+        }
+        else if (commandName.equals("cp-r")) {
+            return true;
+        }
         return false;
     }
     public String getCommandName(){

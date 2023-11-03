@@ -1,12 +1,21 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.InvalidPathException;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Scanner;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.EnumSet;
+import java.util.Vector;
+import static java.nio.file.StandardCopyOption.*;
 public class Terminal {
     Parser parser;
     public static String currentDirectory = System.getProperty("user.dir");
@@ -25,6 +34,8 @@ public class Terminal {
 
 
 /////////////////////////////////////////////////////////////////////////
+
+
     public void echo(String[] args) {
         if (args.length == 1) {
             System.out.println(args[0]);
@@ -46,7 +57,7 @@ public class Terminal {
         if (args.length == 0 ) {
             currentDirectory=homeDirectory;
         } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("..")) {  // second check to change the current directory to the previous directory.
+            if (args[0].equalsIgnoreCase("..")) {
                 try {
                     File currentDir = new File(currentDirectory);
                     String previousPath = currentDir.getParent();
@@ -58,7 +69,7 @@ public class Terminal {
                 } catch (Exception e) {
                     result += "An error occurred while navigating up the directory.\n";
                 }
-            } else {// third check to change the current path to that path
+            } else {
                 File newDir;
                 newDir = new File(currentDirectory, args[0].toString());
                 if (newDir.isDirectory()) {
@@ -197,6 +208,104 @@ public class Terminal {
             }
         }
     }
+    //////////////////////////////////////////
+    public void cp(String [] args){
+        try {
+            String First = args[0];
+            String Last = args[1];
+            if(First.substring(First.indexOf(".")).trim().equals(Last.substring(Last.indexOf(".")).trim())){
+                try {
+                    File ReadedFile = new File(First);
+                    Scanner Reader = new Scanner(ReadedFile);
+                    String ReturnedText = "";
+                    while (Reader.hasNextLine()){
+                        ReturnedText += Reader.nextLine();
+                    }
+                    Reader.close();
+                    try{
+                        FileWriter Writer = new FileWriter(Last);
+                        Writer.write(ReturnedText);
+                        Writer.close();
+                        System.out.println("Text Copied Successfully.");
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                } catch (FileNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex)
+        {
+            System.out.println(ex.toString());
+        }
+
+}
+/////////////////////////////////////////////
+
+    public static void cpr(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Invalid syntax. Usage: cpr <sourceDirectory> <destinationDirectory>");
+            return;
+        }
+
+        String sourcePath = currentDirectory + File.separator + args[0];
+        String destinationPath = currentDirectory + File.separator + args[1];
+
+        File sourceDir = new File(sourcePath);
+        File destinationDir = new File(destinationPath);
+
+        if (!sourceDir.exists() || !sourceDir.isDirectory()) {
+            System.out.println("Source directory does not exist or is not a directory.");
+            return;
+        }
+
+        if (!destinationDir.exists()) {
+            if (!destinationDir.mkdirs()) {
+                System.out.println("Failed to create the destination directory.");
+                return;
+            }
+        }
+
+        try {
+            Files.walkFileTree(sourceDir.toPath(), EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Path targetFile = destinationDir.toPath().resolve(sourceDir.toPath().relativize(file));
+                    Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    Path targetDir = destinationDir.toPath().resolve(sourceDir.toPath().relativize(dir));
+                    if (!Files.exists(targetDir)) {
+                        Files.createDirectory(targetDir);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+
+            System.out.println("Data Copied Successfully");
+        } catch (IOException e) {
+            System.out.println("Error copying files: " + e.getMessage());
+        }
+    }
+
+
+
+public static void insert(String [] args){
+    try{
+        FileWriter Obj1 = new FileWriter(currentDirectory+args[0]);
+        Obj1.write(args[1]);
+        Obj1.close();
+        System.out.println("File Is Updated by Data");
+    }catch (IOException e){
+        System.out.println(e.getMessage());
+    }
+    finally {
+        System.out.println("Command Ended");
+}
+}
 
     //////////////////////////////////////////
 
@@ -262,10 +371,16 @@ public class Terminal {
             case "clear" :
                 clear();
                 break;
+            case "cp":
+                cp(args);
+                break;
+            case ">":
+                insert(args);
+                break;
+            case "cp-r":
+                cpr(args);
+                break;
+
         }
     }
-
-
-
-
 }
