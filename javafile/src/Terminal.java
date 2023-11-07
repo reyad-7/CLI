@@ -63,7 +63,8 @@ public class Terminal {
                     String previousPath = currentDir.getParent();
                     if (previousPath != null) {
                         currentDirectory = previousPath;
-                    } else {
+                    }
+                    else {
                         result += "Already at the root directory.";
                     }
                 } catch (Exception e) {
@@ -71,7 +72,8 @@ public class Terminal {
                 }
             } else {
                 File newDir;
-                newDir = new File(currentDirectory, args[0].toString());
+                newDir = new File(args[0] );
+                currentDirectory=args[0];
                 if (newDir.isDirectory()) {
                     currentDirectory = newDir.getPath();
                 } else {
@@ -105,10 +107,12 @@ public class Terminal {
     public void mkdir(String [] args){
         for (int i =0;i<args.length; i++)
         {
-            File f = new File(args[i]);
+            File f = new File(currentDirectory,args[i]);
             f.mkdir();
+
         }
     }
+
     ////////////////////////////////////////
     public void ls_r(){
         try {
@@ -130,7 +134,7 @@ public class Terminal {
         String dir = args[0];
         try {
             if (dir.equals("*")) {
-                File theDir = new File(currentDirectory);
+                File theDir = new File(args[0]);
                 File[] tmp = theDir.listFiles();
                 for (int i = 0; i < tmp.length; i++) {
                     File file = tmp[i];
